@@ -233,7 +233,7 @@ if __name__ == "__main__":
         updated_data = update_data(bd=basic_data)
         print('Getting params calculated...')
         experimental_metrics = experimental_metrics(bdata=basic_data, udata=updated_data)
-        legacy_metrics = legacy_metrics(bdata=basic_data, up_data=updated_data)
+        legacy_metrics = legacy_metrics(bdata=basic_data, udata=updated_data)
         print('Combining data...')
         full_data = [basic_data, updated_data, experimental_metrics, legacy_metrics]
         merged_data = merging_data(f_data=full_data)

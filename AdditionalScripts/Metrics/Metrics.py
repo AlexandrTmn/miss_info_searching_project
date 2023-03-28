@@ -54,7 +54,7 @@ user_reply_count = 0
 class Metrics:
     # getting text metrics
     @classmethod
-    def text_metrics(cls, text: str, u_text: str):
+    def text_metrics(cls, text: str, up_text: str):
         # getting text sentiment
         def sentiment():
             list_of_text = [text]
