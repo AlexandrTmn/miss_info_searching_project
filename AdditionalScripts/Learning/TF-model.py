@@ -1,5 +1,5 @@
 import json
-import os, glob, warnings
+import warnings
 import pandas as pd
 from joblib import load
 from imblearn.over_sampling import SMOTE
@@ -8,18 +8,18 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from AdditionalScripts.DBScripts.DBConnection import db_connection
 from tensorflow import keras
 import tensorflow as tf
-import os, glob
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from keras.wrappers.scikit_learn import KerasClassifier
+import datetime
+from keras.utils import FeatureSpace
 
 warnings.filterwarnings("ignore")
 conn = db_connection()
 pd.set_option("display.max.columns", None)
 pd.set_option('display.max_colwidth', None)
-from keras.utils import FeatureSpace
 
 
 def get_data():
@@ -43,20 +43,29 @@ def get_data():
     return data_pd
 
 
+# Loading data from DB
 data = get_data()
+
+# drop nan columns and rows
 data = data.drop(columns=['UMData', 'TMMData', 'TMData'])
 data1 = data.dropna()
+
+# Choosing X and y
 X = data1.drop('Hand_mark', axis=1)
 y = data1['Hand_mark']
-print(data.describe())
-standardScale = StandardScaler()
+
+# Scaling and normalising
 label_Encoder = LabelEncoder()
+standardScale = StandardScaler()
 X['TMData.TM_Sentiment'] = label_Encoder.fit_transform(X['TMData.TM_Sentiment'])
-columns_names = X.columns
 standardScale.fit_transform(X)
+# Splitting on test and training datasets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.40, random_state=128)
-over_sampler = SMOTE(k_neighbors=5)
+
+# Applying SMOTE
+over_sampler = SMOTE(k_neighbors=3)
 X, y = over_sampler.fit_resample(X_train, y_train)
+# X, y = X_train,y_train
 
 names = data1.columns
 for i in names:
@@ -110,6 +119,8 @@ metrics = [
     keras.metrics.FalsePositives(name="fp"),
     keras.metrics.TrueNegatives(name="tn"),
     keras.metrics.TruePositives(name="tp"),
+    keras.metrics.Precision(name='Precision'),
+    keras.metrics.Recall(name="Recall"),
 ]
 
 
@@ -129,34 +140,9 @@ def get_basic_model():
     return model
 
 
+date = datetime.datetime.today()
 model = get_basic_model()
 model.summary()
-# keras.utils.plot_model(model, "my_first_model_with_shape_info.png", show_shapes=True)
-history = model.fit(train_df, y, epochs=500, batch_size=256, verbose=2,)
+history = model.fit(train_df, y, epochs=500, batch_size=256, verbose=2, )
 # print(model.get_metrics_result())
-model.save('my_model.h5')
-# plt.plot(history.history['binary_accuracy'])
-# plt.title('model accuracy')
-# plt.ylabel('accuracy')
-# plt.xlabel('epoch')
-# plt.show()
-#
-# plt.plot(history.history['loss'])
-# plt.title('model loss')
-# plt.ylabel('loss')
-# plt.xlabel('epoch')
-# plt.show()
-# model.save_weights("TF-weight")
-
-# from alibi.explainers import AnchorTabular
-# predict_fn = lambda x: model.predict(x)
-#
-# explainer = AnchorTabular(predict_fn, columns_names)
-# explainer.fit(X_train, y_test)
-#
-# idx = 5
-# print('Prediction: ', explainer.predictor(X_test[idx].reshape(1, -1))[0])
-# explanation = explainer.explain(X_test[idx], threshold=0.95)
-# print(explanation.anchor)
-# print('Precision: %.2f' % explanation.precision)
-# print('Coverage: %.2f' % explanation.coverage)
+model.save('Logs/Keras models/Keras_model({}-{}).h5'.format(str(date.day), str(date.hour)))

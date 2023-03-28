@@ -137,5 +137,3 @@ def report(tweet_id: int, smote):
                 index += 1
 
     return result
-# if __name__ == "__main__":
-#     print(report(tweet_id=1638371787615469568))
