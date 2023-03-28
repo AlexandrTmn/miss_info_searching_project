@@ -137,7 +137,7 @@ def sensory_verbs(text: str):
 # Getting ordinal adjectives in tweet text
 def ordinal_adjectives(text: str):
     list_of_ordinal_adjectives = ['во первых', 'во-первых', 'во вторых', 'во-вторых', 'в третьих', 'в-третьих',
-                                  'это раз', 'это два', 'это один', 'это два']
+                                  'это раз', 'это два', 'это один', 'это два', 'для начала', ]
     if re.compile('|'.join(list_of_ordinal_adjectives), re.IGNORECASE).search(text):
         return True
     else:
@@ -167,7 +167,8 @@ def numbers_count(text: str):
 # Getting quantity adjectives in tweet text
 def quantity_adjective(text: str):
     list_of_quantity_adjective = ['несколько', 'некоторое количеств', 'количества', 'количество', 'определенное',
-                                  'число']
+                                  'число', 'достигали', 'достигли', 'целых', 'ровно', 'минимум', 'максимум', 'порядка',
+                                  'больше', 'меньше']
     if re.compile('|'.join(list_of_quantity_adjective), re.IGNORECASE).search(text):
         return True
     else:
@@ -176,7 +177,7 @@ def quantity_adjective(text: str):
 
 # Getting certainty words in tweet text
 def certainty_words(text: str):
-    list_of_certainty_words = ['знаю', 'уверен', 'точно', 'сто процентов', '100%', 'сто проц', 'наверняка']
+    list_of_certainty_words = ['знаю', 'уверен', 'точно', 'сто процентов', '100%', 'сто проц', 'наверняка', 'считаю']
     if re.compile('|'.join(list_of_certainty_words), re.IGNORECASE).search(text):
         return True
     else:
