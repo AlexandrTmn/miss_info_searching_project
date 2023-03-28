@@ -94,7 +94,9 @@ def report(features: int, smote=True):
                 classification_report(y_test_cnb, y_pred_cnbf, output_dict=True), \
                 classification_report(y_test_nn, y_pred_nnf, output_dict=True), \
                 classification_report(y_test_tree, y_pred_treef, output_dict=True),
-        print(cnbf_rep, '\n', knf_rep, '\n', nnf_rep, '\n', svrf_rep, '\n', treef_rep)
+        print('Features number:', features, '\n', 'SMOTE is', smote, '\n', )
+        print('cnbf\n', cnbf_rep, '\n knf\n', knf_rep, '\n nnf\n', nnf_rep, '\n svrf\n', svrf_rep, '\n treef\n',
+              treef_rep)
 
         cnbf_conf, knf_conf, nnf_conf, svrf_conf, treef_conf = \
             confusion_matrix(y_test_nei, y_pred_cnbf), \
@@ -102,7 +104,8 @@ def report(features: int, smote=True):
                 confusion_matrix(y_test_cnb, y_pred_nnf), \
                 confusion_matrix(y_test_nn, y_pred_svrf), \
                 confusion_matrix(y_test_tree, y_pred_treef),
-        print('cnbf', cnbf_conf, '\n knf', knf_conf, '\n nnf', nnf_conf, '\n svrf', svrf_conf, '\n treef', treef_conf)
+        print('cnbf\n', cnbf_conf, '\n knf\n', knf_conf, '\n nnf\n', nnf_conf, '\n svrf\n', svrf_conf, '\n treef\n',
+              treef_conf)
 
         features_am = str(features) + '_features_and_smote_is_' + str(smote)
         stats[features_am] = {}
@@ -141,7 +144,9 @@ def report(features: int, smote=True):
                 classification_report(y_test, y_pred_nnf, output_dict=True), \
                 classification_report(y_test, y_pred_svrf, output_dict=True), \
                 classification_report(y_test, y_pred_treef, output_dict=True),
-        print(cnbf_rep, '\n', knf_rep, '\n', nnf_rep, '\n', svrf_rep, '\n', treef_rep)
+        print('Features number:', features, '\n', 'SMOTE is', smote, '\n', )
+        print('cnbf\n', cnbf_rep, '\n knf\n', knf_rep, '\n nnf\n', nnf_rep, '\n svrf\n', svrf_rep, '\n treef\n',
+              treef_rep)
 
         cnbf_conf, knf_conf, nnf_conf, svrf_conf, treef_conf = \
             confusion_matrix(y_test, y_pred_cnbf), \
@@ -149,22 +154,20 @@ def report(features: int, smote=True):
                 confusion_matrix(y_test, y_pred_nnf), \
                 confusion_matrix(y_test, y_pred_svrf), \
                 confusion_matrix(y_test, y_pred_treef),
-        print('cnbf', cnbf_conf, '\n knf', knf_conf, '\n nnf', nnf_conf, '\n svrf', svrf_conf, '\n treef', treef_conf)
+        print('cnbf\n', cnbf_conf, '\n knf\n', knf_conf, '\n nnf\n', nnf_conf, '\n svrf\n', svrf_conf, '\n treef\n',
+              treef_conf)
 
         stats[features_am]['cnb'] = (round(cnbf_rep['False']['f1-score'], 8), round(cnbf_rep['False']['precision'], 8),
                                      round(cnbf_rep['False']['recall'], 8))
         stats[features_am]['knf'] = (round(knf_rep['False']['f1-score'], 8), round(knf_rep['False']['precision'], 8),
                                      round(knf_rep['False']['recall'], 8))
-        stats[features_am]['nnf'] = (
-            round(nnf_rep['accuracy'], 8), round(nnf_rep['False']['f1-score'], 8),
-            round(nnf_rep['False']['precision'], 8),
-            round(nnf_rep['False']['recall'], 8))
-        stats[features_am]['svrf'] = (round(svrf_rep['accuracy'], 8), round(svrf_rep['False']['f1-score'], 8),
-                                      round(svrf_rep['False']['precision'], 8),
+        stats[features_am]['nnf'] = (round(nnf_rep['False']['f1-score'], 8), round(nnf_rep['False']['precision'], 8),
+                                     round(nnf_rep['False']['recall'], 8))
+        stats[features_am]['svrf'] = (round(svrf_rep['False']['f1-score'], 8), round(svrf_rep['False']['precision'], 8),
                                       round(svrf_rep['False']['recall'], 8))
-        stats[features_am]['treef'] = (round(treef_rep['accuracy'], 8), round(treef_rep['False']['f1-score'], 8),
+        stats[features_am]['treef'] = (round(treef_rep['False']['f1-score'], 8),
                                        round(treef_rep['False']['precision'], 8),
-                                       (treef_rep['False']['recall'], 8),)
+                                       round(treef_rep['False']['recall'], 8))
 
     return stats
 
