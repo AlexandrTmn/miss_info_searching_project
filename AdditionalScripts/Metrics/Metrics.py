@@ -81,7 +81,7 @@ class Metrics:
             with open(vlg_file_path, encoding='utf8') as file:
                 raw_lst = [line.rstrip() for line in file]
                 regex = re.compile("(?=(" + "|".join(map(re.escape, raw_lst)) + "))")
-                mn = re.findall(regex, u_text)
+                mn = re.findall(regex, text)
                 if len(mn) != 0:
                     return True
                 else:
@@ -93,7 +93,7 @@ class Metrics:
             with open(mean_file) as file:
                 mean_list = [line.rstrip() for line in file]
             regex = re.compile("(?=(" + "|".join(map(re.escape, mean_list)) + "))")
-            mn = re.findall(regex, u_text)
+            mn = re.findall(regex, text)
             if len(mn) != 0:
                 return True
             else:

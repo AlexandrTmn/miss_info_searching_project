@@ -239,7 +239,6 @@ if __name__ == "__main__":
         merged_data = merging_data(f_data=full_data)
         fixed_data = data_fix(m_data=merged_data)
         print('Done,\nUploading to DB')
-        print(fixed_data)
         try:
             Dbi.data_insert(merged_data)
         except edgedb.errors.QueryError:

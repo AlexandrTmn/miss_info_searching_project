@@ -143,6 +143,8 @@ def get_basic_model():
 date = datetime.datetime.today()
 model = get_basic_model()
 model.summary()
-history = model.fit(train_df, y, epochs=500, batch_size=256, verbose=2, )
+history = model.fit(train_df, y, epochs=750, batch_size=256, verbose=2, )
 # print(model.get_metrics_result())
+# dot_img_file = '/tmp/model_1.png'
+# tf.keras.utils.plot_model(model, to_file=dot_img_file, show_shapes=True)
 model.save('Logs/Keras models/Keras_model({}-{}).h5'.format(str(date.day), str(date.hour)))

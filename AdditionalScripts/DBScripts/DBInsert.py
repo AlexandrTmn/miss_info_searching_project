@@ -72,7 +72,7 @@ def data_insert(data: dict):
         """,
         # Basic data
         Training_Sample=False, TweetId=int(data['tweet_id']), Hand_mark=False,
-        User_Verified_Raw=data['verified'], User_Followers_Count_Raw=data['followers'],
+        User_Verified_Raw=bool(data['verified']), User_Followers_Count_Raw=data['followers'],
         User_Follows_Count_Raw=data['friends_count'],
         User_likes_count_Raw=data['likes_count'], User_Tweets_count_Raw=data['statuses'],
         User_Created_at_Raw=data['user_created_at'],
@@ -90,7 +90,7 @@ def data_insert(data: dict):
         UM_Influence=data['influence'],
         UM_Originality=data['originality'],
         UM_Role=data['role'],
-        UM_Trust=data['verified'],
+        UM_Trust=bool(data['verified']),
         # Text metrics
         TM_Emotes=data['emotes'],
         TM_Mean=data['mean'],

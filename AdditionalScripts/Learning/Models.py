@@ -50,10 +50,12 @@ def report(tweet_id: int, smote):
     # Preparing data
     data = get_data()
     data = data.loc[data['TweetId'] == tweet_id]
+    print(data)
     data = data.drop(columns=['UMData', 'TMMData', 'TMData'])
     # Drop intermediate data
     x = data.drop('Hand_mark', axis=1)
     x = x.drop('TweetId', axis=1)
+    print(x)
     # Scaling data and Encoding
     standard_scale = StandardScaler()
     label_encoder = LabelEncoder()
