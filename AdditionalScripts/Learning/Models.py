@@ -8,13 +8,14 @@ report -
 
 # imports
 import glob
+import numpy as np
 import json
 import os
 import pandas as pd
 from joblib import load
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from AdditionalScripts.DBScripts.DBConnection import db_connection
-
+import tensorflow as tf
 # settings
 pd.set_option("display.max.columns", None)
 pd.set_option('display.max_colwidth', None)
@@ -46,16 +47,16 @@ def get_data():
     return data_pd
 
 
-def report(tweet_id: int, smote):
+def report(tweet_id, smote):
     # Preparing data
     data = get_data()
-    data = data.loc[data['TweetId'] == tweet_id]
-    print(data)
+    if tweet_id in data['TweetId']:
+        print('Yes')
+    data = data.loc[data['TweetId'] == np.int(tweet_id)]
     data = data.drop(columns=['UMData', 'TMMData', 'TMData'])
     # Drop intermediate data
     x = data.drop('Hand_mark', axis=1)
     x = x.drop('TweetId', axis=1)
-    print(x)
     # Scaling data and Encoding
     standard_scale = StandardScaler()
     label_encoder = LabelEncoder()
@@ -117,21 +118,23 @@ def report(tweet_id: int, smote):
 
             cnb, kn, nn, svr, tree = glob.glob(os.path.join(models29_path, '*.joblib'))
             cnb, kn, nn, svr, tree = load(cnb), load(kn), load(nn), load(svr), load(tree)
-
+            # new_model = tf.keras.models.load_model('AdditionalScripts/Learning/Logs/Keras models/Keras_model(24-11).h5')
             # Predicting for models
             data_to_append = {
                 'CNB': cnb.predict(x),
                 'KN': kn.predict(x),
                 'MLP': nn.predict(x),
                 'SVC': svr.predict(x),
-                'DT': tree.predict(x)
+                'DT': tree.predict(x),
+                # 'TF': new_model.predict(x)
             }
             numbers_to_append = {
                 'CNB': cnb.predict_proba(x),
                 'KN': kn.predict_proba(x),
                 'MLP': nn.predict_proba(x),
                 'SVC': None,
-                'DT': tree.predict_proba(x)
+                'DT': tree.predict_proba(x),
+                # 'TF': new_model.predict_proba(x)
             }
 
             for items in data_to_append.items():

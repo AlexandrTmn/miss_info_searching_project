@@ -68,7 +68,6 @@ def data_insert(data: dict):
                 EM_Sensory_Verbs:=<bool>$EM_Sensory_Verbs,
                 EM_Spelling:=<float32>$EM_Spelling}),
         }
-        UNLESS conflict on .TweetId
         """,
         # Basic data
         Training_Sample=False, TweetId=int(data['tweet_id']), Hand_mark=False,

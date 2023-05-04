@@ -24,6 +24,7 @@ from AdditionalScripts.DBScripts.DBConnection import db_connection
 from AdditionalScripts.Learning import Models
 import datetime as dt
 import edgedb.errors
+import numpy as np
 
 
 def ask_id():
@@ -83,8 +84,9 @@ def check_valid_url_or_id(tweet_id_or_url):
         tweet_id = tweet_id_or_url
 
     # Checking if id already exist
-    if tweet_id in data_pd['TweetId']:
-        return False
+    data = data_pd.loc[data_pd['TweetId'] == np.int(tweet_id)]
+    if not data.empty:
+        return np.int(tweet_id)
 
     # Checking if id is valid
     try:
@@ -227,6 +229,19 @@ def data_fix(m_data: dict):
 if __name__ == "__main__":
     tweet_start = ask_id()
     valid_id = check_valid_url_or_id(tweet_start)
+    if type(valid_id) is int:
+        repeat = input('Repeat: YES \ NO?\n')
+        if repeat == 'Yes':
+            smote = input('Smote = True or False\n')
+            if smote:
+                result = Models.report(valid_id, smote)
+            elif not smote:
+                result = Models.report(valid_id, smote)
+            else:
+                pass
+            print(result)
+            exit()
+
     if valid_id is not False:
         print('Getting basic data...')
         basic_data = tweepy_get_data(tweet_id=valid_id)
